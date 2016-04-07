@@ -56,11 +56,11 @@ public:
   virtual ~Evaluation_Exception() throw () {}
 };
 
-Object eval(Object l, Environment env);
+Object eval(Object l, Environment &env);
 Object apply(Object f, Object lvals, Environment env);
 Object eval_list(Object largs, Environment env);
 
-Object eval(Object l, Environment env) {
+Object eval(Object l, Environment &env) {
   clog << "\teval: " << l << env << endl;
 
   if (null(l)) return l;
@@ -78,6 +78,12 @@ Object eval(Object l, Environment env) {
       Object test_value = eval(test_part, env);
       if (null(test_value)) return eval(else_part, env);
       return eval(then_part, env);
+    }
+    if (Object_to_string(f) == "setq") {
+      Object symb = cadr(l);
+      Object value = caddr(l);
+      env.add_new_binding(Object_to_string(symb), value);
+      return nil();
     }
   }
   // It is a function applied to arguments
