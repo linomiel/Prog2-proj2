@@ -15,6 +15,7 @@ public:
   Binding(string _name, Object _value);
   string get_name() const;
   Object get_value() const;
+  void set_value(Object value);
 };
 
 class Environment {
@@ -23,6 +24,7 @@ private:
 public:
   Environment();
   void add_new_binding(string name, Object value);
+  void modify_env(string name, Object value);
   void extend_env(Object lpars, Object lvals);
   Object find_value(string name);
   void print(ostream& s);
