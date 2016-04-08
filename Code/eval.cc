@@ -56,6 +56,7 @@ public:
   virtual ~Evaluation_Exception() throw () {}
 };
 
+<<<<<<< HEAD
 class Subroutine_Evaluation_Exception: public runtime_error {
 private:
   string name;
@@ -69,6 +70,8 @@ public:
   virtual ~Evaluation_Exception() throw () {}
 };
 
+=======
+>>>>>>> 71917c84caab7662a5bb5474cc6e05b2923bd1f5
 Object eval(Object l, Environment env);
 Object apply(Object f, Object lvals, Environment env);
 Object eval_list(Object largs, Environment env);
@@ -91,6 +94,10 @@ Object eval(Object l, Environment env) {
       Object test_value = eval(test_part, env);
       if (null(test_value)) return eval(else_part, env);
       return eval(then_part, env);
+    }
+    if(Object_to_string(f) == "printenv") {
+      cout << env;
+      return nil();
     }
   }
   // It is a function applied to arguments

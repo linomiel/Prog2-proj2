@@ -15,6 +15,10 @@ Object  Binding::get_value() const {
   return value;
 }
 
+void Binding::set_value(Object _value) {
+  value = _value;
+}
+
 class No_Binding_Exception: public runtime_error {
 private:
   string name;
@@ -44,6 +48,16 @@ Environment::Environment() {
 
 void Environment::add_new_binding(string name, Object value) {
   contents.push_back(Binding(name, value));
+}
+void Environment::modify_env(string name, Object value) {
+
+    for (int i = contents.size() - 1;; i--) {
+      if (i < 0) {add_new_binding(name, value); break;}
+      if (contents.at(i).get_name() == name){
+        contents.at(i).set_value(value);
+        break;
+      }
+  }
 }
 void Environment::extend_env(Object lpars, Object lvals) {
   if (null(lpars) && null(lvals)) return;
