@@ -15,6 +15,8 @@ int main() {
   Object two = number_to_Object(2);
 
   Environment env;
+  env.add_new_binding("+", subr());
+  env.add_new_binding("*", subr());
   env.add_new_binding(Object_to_string(a), one);
   env.add_new_binding(Object_to_string(a), two);
   
@@ -22,6 +24,7 @@ int main() {
     cout << "Lisp? " << flush;
     yyparse();
     Object l = just_read;
+    
     cout << eval(l, env) << endl;
   } while (!feof(yyin));
 }

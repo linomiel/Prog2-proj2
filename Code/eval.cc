@@ -56,11 +56,24 @@ public:
   virtual ~Evaluation_Exception() throw () {}
 };
 
-Object eval(Object l, Environment &env);
+class Subroutine_Evaluation_Exception: public runtime_error {
+private:
+  string name;
+  string message;
+public:
+  Evaluation_Exception(string _name, string _message):
+    runtime_error("Subroutine Evaluation error:" + _message) {
+    name = _name;
+    message = _message;
+  }
+  virtual ~Evaluation_Exception() throw () {}
+};
+
+Object eval(Object l, Environment env);
 Object apply(Object f, Object lvals, Environment env);
 Object eval_list(Object largs, Environment env);
 
-Object eval(Object l, Environment &env) {
+Object eval(Object l, Environment env) {
   clog << "\teval: " << l << env << endl;
 
   if (null(l)) return l;
@@ -79,12 +92,6 @@ Object eval(Object l, Environment &env) {
       if (null(test_value)) return eval(else_part, env);
       return eval(then_part, env);
     }
-    if (Object_to_string(f) == "setq") {
-      Object symb = cadr(l);
-      Object value = caddr(l);
-      env.add_new_binding(Object_to_string(symb), value);
-      return nil();
-    }
   }
   // It is a function applied to arguments
   Object vals = eval_list(cdr(l), env);
@@ -96,8 +103,9 @@ Object eval_list(Object largs, Environment env) {
   return cons(eval(car(largs), env), eval_list(cdr(largs), env));
 }
 
-
 Object do_plus(Object lvals) {
+  if (is_empty(lvals) || is_empty(cdr(lvals)))
+    throw Evaluation_Exception("+", "Not enough arguments")
   int a = Object_to_number(car(lvals));
   int b = Object_to_number(cadr(lvals));
   return number_to_Object(a + b);
@@ -115,7 +123,7 @@ Object apply(Object f, Object lvals, Environment env) {
   if (null(f)) throw Evaluation_Exception(f, env, "Cannot apply nil");
   if (numberp(f)) throw Evaluation_Exception(f, env, "Cannot apply a number");
   if (stringp(f)) throw Evaluation_Exception(f, env, "Cannot apply a string");
-  if (symbolp(f)) {
+  else if (symbolp(f)) {
     if (Object_to_string(f) == "+") return do_plus(lvals);
     if (Object_to_string(f) == "*") return do_times(lvals);
     Object new_f = env.find_value(Object_to_string(f));

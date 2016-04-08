@@ -24,6 +24,7 @@ private:
 
   cell_value value;
   static Cell cell_nil;
+  static Cell cell_subr;
   void check();
 
   cell_sort get_sort() const;
@@ -43,6 +44,7 @@ public:
   Cell *to_pair_next() const;
 
   static Cell *nil();
+  static Cell *subr();
 
   void make_cell_number(int a);
   void make_cell_string(string s);

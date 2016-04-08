@@ -54,6 +54,10 @@ Cell *Cell::nil() {
   return &cell_nil;
 }
 
+Cell *Cell::subr() {
+  return &cell_subr;
+}
+
 Cell::Cell() {
   make_cell_number(42); //For instance. Why not? :-)
   check();
@@ -85,6 +89,7 @@ void Cell::make_cell_pair(Cell* p, Cell* q) {
 }
 
 Cell Cell::cell_nil = Cell();
+Cell Cell::cell_subr = Cell();
 
 static ostream& print_cell_pointer(ostream& s, const Cell *p);
 
@@ -101,6 +106,7 @@ static ostream& print_cell_pointer_aux(ostream& s, const Cell *p) {
 
 static ostream& print_cell_pointer(ostream& s, const Cell *p) {
   if (p == Cell::nil()) return s << "nil" << flush;
+  if (p == Cell::subr()) return s << "<subr>" << flush;
   if (p -> is_number()) return s << p -> to_number() << flush;
   if (p -> is_string()) return s << p -> to_string() << flush;
   if (p -> is_symbol()) return s << p -> to_symbol() << flush;

@@ -9,6 +9,10 @@ Object nil() {
   return Cell::nil();
 }
 
+Object subr() {
+  return Cell::subr();
+}
+
 bool null(Object l) {
   return l == nil();
 }

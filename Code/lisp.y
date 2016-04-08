@@ -67,7 +67,7 @@ list_rpar expr          {$$ = $2; clog << "Read: " << $2 << endl; just_read = $$
 expr:
 Token_number            {test(number, $1); $$ = number_to_Object($1);}
 | Token_nil             {test(nil, ""); $$ = nil();}
-| Token_symbol		{test(symbol, $1); $$ = symbol_to_Object($1);}
+| Token_symbol          {test(symbol, $1); $$ = symbol_to_Object($1);}
 | Token_string          {test(string, $1); $$ = string_to_Object($1);}
 | Token_quote expr      {test(quote, ""); $$ = cons(string_to_Object("quote"), $2);}
 | Token_lpar list_expr Token_rpar	{$$ = reverse($2);} // Right order is back! :-)
