@@ -1,6 +1,7 @@
 #include "object.hh"
 #include "env.hh"
 #include "eval.hh"
+#include "subr.hh"
 #include <stdio.h>
 #include <cassert>
 extern Object just_read;
@@ -11,7 +12,6 @@ using namespace std;
 
 bool handle_directive (Object l, Environment &env) {
   if (listp(l)){
-    cout << "tic" << endl;
     Object f = car(l);
     if (Object_to_string(f) == "define") {
       assert(!is_empty(cdr(l)));
@@ -41,8 +41,7 @@ int main() {
   Object two = number_to_Object(2);
 
   Environment env;
-  env.add_new_binding("+", subr());
-  env.add_new_binding("*", subr());
+  env_init_subr(env);
   env.add_new_binding(Object_to_string(a), one);
   env.add_new_binding(Object_to_string(a), two);
   

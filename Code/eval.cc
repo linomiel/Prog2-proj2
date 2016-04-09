@@ -21,6 +21,10 @@ bool listp(Object l) {
   return l -> is_pair();
 }
 
+bool subrp(Object l) {
+  return l -> is_subr();
+}
+
 Object cadr(Object l) {
   return car(cdr(l));
 }
@@ -56,22 +60,6 @@ public:
   virtual ~Evaluation_Exception() throw () {}
 };
 
-<<<<<<< HEAD
-class Subroutine_Evaluation_Exception: public runtime_error {
-private:
-  string name;
-  string message;
-public:
-  Evaluation_Exception(string _name, string _message):
-    runtime_error("Subroutine Evaluation error:" + _message) {
-    name = _name;
-    message = _message;
-  }
-  virtual ~Evaluation_Exception() throw () {}
-};
-
-=======
->>>>>>> 71917c84caab7662a5bb5474cc6e05b2923bd1f5
 Object eval(Object l, Environment env);
 Object apply(Object f, Object lvals, Environment env);
 Object eval_list(Object largs, Environment env);
@@ -110,20 +98,6 @@ Object eval_list(Object largs, Environment env) {
   return cons(eval(car(largs), env), eval_list(cdr(largs), env));
 }
 
-Object do_plus(Object lvals) {
-  if (is_empty(lvals) || is_empty(cdr(lvals)))
-    throw Evaluation_Exception("+", "Not enough arguments")
-  int a = Object_to_number(car(lvals));
-  int b = Object_to_number(cadr(lvals));
-  return number_to_Object(a + b);
-}
-
-Object do_times(Object lvals) {
-  int a = Object_to_number(car(lvals));
-  int b = Object_to_number(cadr(lvals));
-  return number_to_Object(a * b);
-}
-
 Object apply(Object f, Object lvals, Environment env) {
   clog << "\tapply: " << f << " " << lvals << env << endl;
 
@@ -131,9 +105,10 @@ Object apply(Object f, Object lvals, Environment env) {
   if (numberp(f)) throw Evaluation_Exception(f, env, "Cannot apply a number");
   if (stringp(f)) throw Evaluation_Exception(f, env, "Cannot apply a string");
   else if (symbolp(f)) {
-    if (Object_to_string(f) == "+") return do_plus(lvals);
-    if (Object_to_string(f) == "*") return do_times(lvals);
     Object new_f = env.find_value(Object_to_string(f));
+    if (subrp(new_f)) {
+      return apply_subr(Object_to_string(f), lvals);
+    }
     return apply(new_f, lvals, env);
   }
   assert(listp(f));

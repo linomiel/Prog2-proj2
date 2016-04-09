@@ -19,16 +19,6 @@ void Binding::set_value(Object _value) {
   value = _value;
 }
 
-class No_Binding_Exception: public runtime_error {
-private:
-  string name;
-public:
-  No_Binding_Exception(string _name): runtime_error("No binding for name: " + _name) {
-    name = _name;
-  }
-  virtual ~No_Binding_Exception() throw () {}
-};
-
 class Zipping_Exception: public runtime_error {
 private:
   string message;

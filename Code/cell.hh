@@ -36,6 +36,7 @@ public:
   bool is_string() const;
   bool is_symbol() const;
   bool is_pair() const;
+  bool is_subr() const;
 
   int to_number() const;
   string to_string() const;

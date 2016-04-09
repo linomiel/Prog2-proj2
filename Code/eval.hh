@@ -2,6 +2,7 @@
 
 #include "object.hh"
 #include "env.hh"
+#include "subr.hh"
 
 using namespace std;
 
@@ -9,6 +10,7 @@ bool numberp(Object l);
 bool stringp(Object l);
 bool symbolp(Object l);
 bool listp(Object l);
+bool subrp(Object l);
 
 Object cadr(Object l);
 Object cddr(Object l);

@@ -24,6 +24,9 @@ bool Cell::is_symbol() const {
 bool Cell::is_pair() const {
   return sort == PAIR;
 }
+bool Cell::is_subr() const {
+  return (this == subr());
+}
 
 int Cell::to_number() const {
   assert(is_number());
