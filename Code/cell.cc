@@ -25,7 +25,7 @@ bool Cell::is_pair() const {
   return sort == PAIR;
 }
 bool Cell::is_subr() const {
-  return (this == subr());
+  return sort == SUBR;
 }
 
 int Cell::to_number() const {
@@ -43,6 +43,11 @@ string Cell::to_symbol() const {
   return string(value.as_symbol);
 }
 
+string Cell::to_subr() const {
+  assert(is_subr());
+  return string(value.as_subr);
+}
+
 Cell *Cell::to_pair_item() const {
   assert(is_pair());
   return value.as_pair.item;
@@ -55,10 +60,6 @@ Cell *Cell::to_pair_next() const {
 
 Cell *Cell::nil() {
   return &cell_nil;
-}
-
-Cell *Cell::subr() {
-  return &cell_subr;
 }
 
 Cell::Cell() {
@@ -83,6 +84,12 @@ void Cell::make_cell_symbol(string s) {
   value.as_symbol = p;
 }
 
+void Cell::make_cell_subr(string s) {
+  sort = SUBR;
+  char *p = strdup(s.c_str());	// Watch it! Allocated by malloc
+  value.as_subr = p;
+}
+
 void Cell::make_cell_pair(Cell* p, Cell* q) {
   sort = PAIR;
   cell_pair c;
@@ -95,7 +102,7 @@ bool Cell::is_eq(Cell* p) {
   if (p == this) {
     return true;
   }
-  if (is_symbol() || p->is_symbol()) {
+  if (is_symbol() || p->is_symbol() || is_subr() || p->is_subr()) {
     return false;
   }
   if (sort != p->sort) {
@@ -111,7 +118,6 @@ bool Cell::is_eq(Cell* p) {
 }
 
 Cell Cell::cell_nil = Cell();
-Cell Cell::cell_subr = Cell();
 
 static ostream& print_cell_pointer(ostream& s, const Cell *p);
 
@@ -128,10 +134,10 @@ static ostream& print_cell_pointer_aux(ostream& s, const Cell *p) {
 
 static ostream& print_cell_pointer(ostream& s, const Cell *p) {
   if (p == Cell::nil()) return s << "nil" << flush;
-  if (p == Cell::subr()) return s << "<subr>" << flush;
   if (p -> is_number()) return s << p -> to_number() << flush;
   if (p -> is_string()) return s << p -> to_string() << flush;
   if (p -> is_symbol()) return s << p -> to_symbol() << flush;
+  if (p -> is_subr()) return s << "<subr>" << flush;
   if (p -> is_pair()) {
     s << "(" << flush;
     print_cell_pointer_aux(s, p);

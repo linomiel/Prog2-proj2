@@ -66,7 +66,7 @@ Object Environment::find_value(string name) {
 void Environment::print(ostream& s) {
   s << "\t| ";
   for (int i = contents.size() - 1; i >= 0; i--) {
-    if (contents.at(i).get_value() != subr()) {
+    if (!contents.at(i).get_value()->is_subr()) {
       s << contents.at(i).get_name() << ": " << contents.at(i).get_value() << "; ";
     }
   }

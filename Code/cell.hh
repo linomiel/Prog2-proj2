@@ -7,7 +7,7 @@ using namespace std;
 
 class Cell {
 private:
-  enum cell_sort {NUMBER, STRING, SYMBOL, PAIR};
+  enum cell_sort {NUMBER, STRING, SYMBOL, PAIR, SUBR};
   cell_sort sort;
 
   struct cell_pair {
@@ -19,12 +19,12 @@ private:
     int as_number;
     char *as_string;
     char *as_symbol;
+    char *as_subr;
     cell_pair as_pair;
   };
 
   cell_value value;
   static Cell cell_nil;
-  static Cell cell_subr;
   void check();
 
   cell_sort get_sort() const;
@@ -41,15 +41,16 @@ public:
   int to_number() const;
   string to_string() const;
   string to_symbol() const;
+  string to_subr() const;
   Cell *to_pair_item() const;
   Cell *to_pair_next() const;
 
   static Cell *nil();
-  static Cell *subr();
 
   void make_cell_number(int a);
   void make_cell_string(string s);
   void make_cell_symbol(string s);
+  void make_cell_subr(string s);
   void make_cell_pair(Cell* p, Cell* q);
   
   bool is_eq(Cell* p);

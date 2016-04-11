@@ -5,7 +5,6 @@
 typedef Cell* Object;
 
 Object nil();
-Object subr();
 bool null(Object l);
 
 Object cons(Object a, Object l);
@@ -19,6 +18,7 @@ bool eqp(Object a, Object b);
 Object number_to_Object(int n);
 Object string_to_Object(string s);
 Object symbol_to_Object(string s);
+Object subr_to_Object(string s);
 
 int Object_to_number(Object l);
 string Object_to_string(Object l);

@@ -9,10 +9,6 @@ Object nil() {
   return Cell::nil();
 }
 
-Object subr() {
-  return Cell::subr();
-}
-
 bool null(Object l) {
   return l == nil();
 }
@@ -63,13 +59,20 @@ Object symbol_to_Object(string s) {
   return p;
 }
 
+Object subr_to_Object(string s) {
+  Object p = new Cell();
+  p -> make_cell_subr(s);
+  return p;
+}
+
 int Object_to_number(Object l) {
   return l -> to_number();
 }
 
 string Object_to_string(Object l) {
-  assert(l -> is_string() || l -> is_symbol());
+  assert(l -> is_string() || l -> is_symbol() || l -> is_subr());
   if (l -> is_string()) return l -> to_string();
   if (l -> is_symbol()) return l -> to_symbol();
+  if (l -> is_subr()) return l -> to_subr();
   assert(false);
 }

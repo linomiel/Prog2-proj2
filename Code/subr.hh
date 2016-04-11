@@ -29,7 +29,7 @@ Subroutine_Evaluation_Exception(string _name, string _message):
 
 void env_init_subr(Environment &env);
 
-Object apply_subr(string subr_name, Object lvals);
+Object apply_subr(Object subr, Object lvals, Environment &env);
 
 Object do_plus(Object lvals);
 Object do_times(Object lvals);
@@ -39,10 +39,10 @@ Object do_car(Object lvals);
 Object do_cdr(Object lvals);
 Object do_cons(Object lvals);
 Object do_eq(Object lvals);
-Object do_read(Object lvals);
+Object do_read();
 Object do_print(Object lvals);
-Object do_newline(Object lvals);
-Object do_end(Object lvals);
+Object do_newline();
+Object do_end();
 
 Object do_null(Object lvals);
 Object do_stringp(Object lvals);
@@ -50,7 +50,7 @@ Object do_numberp(Object lvals);
 Object do_symbolp(Object lvals);
 Object do_listp(Object lvals);
 
-//Object do_eval(Object lvals);
-//Object do_apply(Object lvals, Environment &env);
+Object do_eval(Object lvals, Environment &env);
+Object do_apply(Object lvals, Environment &env);
 Object do_error(Object lvals);
 

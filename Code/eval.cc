@@ -60,11 +60,11 @@ public:
   virtual ~Evaluation_Exception() throw () {}
 };
 
-Object eval(Object l, Environment env);
-Object apply(Object f, Object lvals, Environment env);
+Object eval(Object l, Environment &env);
+Object apply(Object f, Object lvals, Environment &env);
 Object eval_list(Object largs, Environment env);
 
-Object eval(Object l, Environment env) {
+Object eval(Object l, Environment &env) {
   clog << "\teval: " << l << env << endl;
 
   if (null(l)) return l;
@@ -98,7 +98,7 @@ Object eval_list(Object largs, Environment env) {
   return cons(eval(car(largs), env), eval_list(cdr(largs), env));
 }
 
-Object apply(Object f, Object lvals, Environment env) {
+Object apply(Object f, Object lvals, Environment &env) {
   clog << "\tapply: " << f << " " << lvals << env << endl;
 
   if (null(f)) throw Evaluation_Exception(f, env, "Cannot apply nil");
@@ -106,10 +106,11 @@ Object apply(Object f, Object lvals, Environment env) {
   if (stringp(f)) throw Evaluation_Exception(f, env, "Cannot apply a string");
   else if (symbolp(f)) {
     Object new_f = env.find_value(Object_to_string(f));
-    if (subrp(new_f)) {
-      return apply_subr(Object_to_string(f), lvals);
-    }
     return apply(new_f, lvals, env);
+  }
+  else if (subrp(f)) {
+    Object new_f = env.find_value(Object_to_string(f));
+    return apply_subr(new_f, lvals, env);
   }
   assert(listp(f));
   if (Object_to_string(car(f)) == "lambda") {

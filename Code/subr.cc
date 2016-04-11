@@ -4,31 +4,37 @@ extern Object just_read;
 extern "C" int yyparse();
 extern "C" FILE *yyin;
 
-void env_init_subr(Environment &env) {
-  env.add_new_binding("+", subr());
-  env.add_new_binding("*", subr());
-  env.add_new_binding("-", subr());
-  env.add_new_binding("concat", subr());
-  env.add_new_binding("car", subr());
-  env.add_new_binding("cdr", subr());
-  env.add_new_binding("cons", subr());
-  env.add_new_binding("eq", subr());
-  env.add_new_binding("=", subr());
-  env.add_new_binding("read", subr());
-  env.add_new_binding("print", subr());
-  env.add_new_binding("newline", subr());
-  env.add_new_binding("end", subr());
-  env.add_new_binding("null", subr());
-  env.add_new_binding("stringp", subr());
-  env.add_new_binding("numberp", subr());
-  env.add_new_binding("symbolp", subr());
-  env.add_new_binding("listp", subr());
-  env.add_new_binding("eval", subr());
-  env.add_new_binding("apply", subr());
-  env.add_new_binding("error", subr());
+void add_subr(Environment &env, string name) {
+  Object p = subr_to_Object(name);
+  env.add_new_binding(name, p);
 }
 
-Object apply_subr(string subr_name, Object lvals) {
+void env_init_subr(Environment &env) {
+  add_subr(env, "+");
+  add_subr(env, "*");
+  add_subr(env, "-");
+  add_subr(env, "concat");
+  add_subr(env, "car");
+  add_subr(env, "cdr");
+  add_subr(env, "cons");
+  add_subr(env, "eq");
+  add_subr(env, "=");
+  add_subr(env, "read");
+  add_subr(env, "print");
+  add_subr(env, "newline");
+  add_subr(env, "end");
+  add_subr(env, "null");
+  add_subr(env, "stringp");
+  add_subr(env, "numberp");
+  add_subr(env, "symbolp");
+  add_subr(env, "listp");
+  add_subr(env, "eval");
+  add_subr(env, "apply");
+  add_subr(env, "error");
+}
+
+Object apply_subr(Object subr, Object lvals, Environment &env) {
+  string subr_name = Object_to_string(subr);
   if (subr_name == "+") {
     return do_plus(lvals);
   }
@@ -54,16 +60,16 @@ Object apply_subr(string subr_name, Object lvals) {
     return do_eq(lvals);
   }
   else if (subr_name == "read") {
-    return do_read(lvals);
+    return do_read();
   }
   else if (subr_name == "print") {
     return do_print(lvals);
   }
   else if (subr_name == "newline") {
-    return do_newline(lvals);
+    return do_newline();
   }
   else if (subr_name == "end") {
-    return do_end(lvals);
+    return do_end();
   }
   else if (subr_name == "null") {
     return do_null(lvals);
@@ -79,6 +85,12 @@ Object apply_subr(string subr_name, Object lvals) {
   }
   else if (subr_name == "listp") {
     return do_listp(lvals);
+  }
+  else if (subr_name == "eval") {
+    return do_eval(lvals, env);
+  }
+  else if (subr_name == "apply") {
+    return do_apply(lvals, env);
   }
   else if (subr_name == "error") {
     return do_error(lvals);
@@ -155,7 +167,7 @@ Object do_eq(Object lvals) {
     return nil();
   }
 }
-Object do_read(Object lvals) {
+Object do_read() {
   std::cout << std::endl;
   yyparse();
   return just_read;
@@ -167,11 +179,11 @@ Object do_print(Object lvals){
   std::cout << c << std::flush;
   return c;
 }
-Object do_newline(Object lvals) {
+Object do_newline() {
   std::cout << std::endl;
   return nil();
 }
-Object do_end(Object lvals) {
+Object do_end() {
   throw Lisp_Exit();
   return nil();
 }
@@ -232,7 +244,14 @@ Object do_listp(Object lvals) {
   }
 }
 
-/*Object do_apply(Object lvals, Environment &env) {
+Object do_eval(Object lvals, Environment &env) {
+  if (is_empty(lvals))
+    throw Subroutine_Evaluation_Exception("eval", "Not enough arguments");
+  Object a = car(lvals);
+  return eval(a, env);
+}
+
+Object do_apply(Object lvals, Environment &env) {
   if (is_empty(lvals) || is_empty(cdr(lvals)))
     throw Subroutine_Evaluation_Exception("apply", "Not enough arguments");
   Object a = car(lvals);
@@ -240,7 +259,7 @@ Object do_listp(Object lvals) {
   if (!symbolp(a) && !subrp(a))
     throw Subroutine_Evaluation_Exception("apply", "First argument must be a symbol");
   return apply(a, b, env);
-}*/
+}
 
 Object do_error(Object lvals) {
   if (is_empty(lvals))
