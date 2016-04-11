@@ -83,9 +83,18 @@ Object eval(Object l, Environment &env) {
       if (null(test_value)) return eval(else_part, env);
       return eval(then_part, env);
     }
-    if(Object_to_string(f) == "printenv") {
+    if (Object_to_string(f) == "printenv") {
       cout << env;
       return nil();
+    }
+    if (Object_to_string(f) == "progn") {
+      return do_progn(cdr(l), env);
+    }
+    if (Object_to_string(f) == "cond") {
+      return do_cond(cdr(l), env);
+    }
+    if (Object_to_string(f) == "andthen") {
+      return do_andthen(cdr(l), env);
     }
   }
   // It is a function applied to arguments
@@ -122,4 +131,46 @@ Object apply(Object f, Object lvals, Environment &env) {
   }
   throw Evaluation_Exception(f, env, "Cannot apply a list");
   assert(false);
+}
+
+Object do_progn(Object l, Environment &env) {
+  if (null(l)) return nil();
+  else {
+    Object a = car(l);
+    if (null(cdr(l))) {
+      return eval(a, env);
+    }
+    else {
+      eval(a, env);
+      return do_progn(cdr(l), env);
+    }
+    
+  }
+}
+
+Object do_cond(Object l, Environment &env) {
+  if (null(l)) return nil();
+  else {
+    Object a = car(l); // First condition
+    Object r = eval(car(a), env);
+    if (!null(r)) {
+      return eval(cadr(a), env);
+    }
+    else {
+      return do_cond(cdr(l), env);
+    }
+  }
+}
+
+Object do_andthen(Object l, Environment &env) {
+  if (null(l) || null(cdr(l))) throw Evaluation_Exception(string_to_Object("andthen"), env, "Not enough arguments");
+  else {
+    Object r = eval(car(l), env);
+    if (!null(r)) {
+      return eval(cadr(l), env);
+    }
+    else {
+      return nil();
+    }
+  }
 }

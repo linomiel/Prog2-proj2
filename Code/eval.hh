@@ -21,3 +21,7 @@ Object cadddr(Object l);
 Object eval(Object l, Environment &env);
 Object apply(Object f, Object lvals, Environment &env);
 Object eval_list(Object largs, Environment env);
+
+Object do_progn(Object l, Environment &env);
+Object do_cond(Object l, Environment &env);
+Object do_andthen(Object l, Environment &env);
