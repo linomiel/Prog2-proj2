@@ -74,6 +74,7 @@ Object eval(Object l, Environment &env) {
   assert(listp(l));
   Object f = car(l);
   if (symbolp(f)) {
+    if (Object_to_string(f) == "lambda") {return l;}
     if (Object_to_string(f) == "quote") {return cdr(l);}
     if (Object_to_string(f) == "if") {
       Object test_part = cadr(l);
