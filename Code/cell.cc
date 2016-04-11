@@ -91,6 +91,25 @@ void Cell::make_cell_pair(Cell* p, Cell* q) {
   value.as_pair = c;
 }
 
+bool Cell::is_eq(Cell* p) {
+  if (p == this) {
+    return true;
+  }
+  if (is_symbol() || p->is_symbol()) {
+    return false;
+  }
+  if (sort != p->sort) {
+    return false;
+  }
+  else if (sort == NUMBER) {
+    return (value.as_number == p->value.as_number);
+  }
+  else if (sort == STRING) {
+    return (value.as_string == p->value.as_string);
+  }
+  return false;
+}
+
 Cell Cell::cell_nil = Cell();
 Cell Cell::cell_subr = Cell();
 

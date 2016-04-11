@@ -51,6 +51,8 @@ public:
   void make_cell_string(string s);
   void make_cell_symbol(string s);
   void make_cell_pair(Cell* p, Cell* q);
+  
+  bool is_eq(Cell* p);
 };
 
 ostream& operator << (ostream& s, const Cell *p);

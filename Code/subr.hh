@@ -3,6 +3,20 @@
 #include "object.hh"
 #include "env.hh"
 
+class Lisp_Exit: public runtime_error {
+public:
+Lisp_Exit():
+  runtime_error("Exiting Lisp.") {}
+  virtual ~Lisp_Exit() throw () {}
+};
+
+class User_Error: public runtime_error {
+public:
+User_Error(string _message):
+  runtime_error("Lisp error! " + _message) {}
+  virtual ~User_Error() throw () {}
+};
+
 class Subroutine_Evaluation_Exception: public runtime_error {
 private:
   string name;
@@ -36,7 +50,7 @@ Object do_numberp(Object lvals);
 Object do_symbolp(Object lvals);
 Object do_listp(Object lvals);
 
-Object do_eval(Object lvals);
-Object do_apply(Object lvals);
+//Object do_eval(Object lvals);
+//Object do_apply(Object lvals, Environment &env);
 Object do_error(Object lvals);
 

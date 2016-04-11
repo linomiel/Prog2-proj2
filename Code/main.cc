@@ -35,24 +35,27 @@ bool handle_directive (Object l, Environment &env) {
 }
 
 int main() {
-  Object a =  symbol_to_Object("a");
-  Object b =  symbol_to_Object("b");
-  Object one = number_to_Object(1);
-  Object two = number_to_Object(2);
-
   Environment env;
   env_init_subr(env);
-  env.add_new_binding(Object_to_string(a), one);
-  env.add_new_binding(Object_to_string(a), two);
   
-  do {
-    cout << "Lisp? " << flush;
-    yyparse();
-    Object l = just_read;
-    if (!handle_directive(l, env)){ 
-      cout << eval(l, env) << endl;
-    }
-  } while (!feof(yyin));
+  try {
+    do {
+      cout << "Lisp? " << flush;
+      yyparse();
+      Object l = just_read;
+      try {
+      if (!handle_directive(l, env)) {
+          cout << eval(l, env) << endl;
+        }
+      }
+      catch (User_Error(e)) {std::clog << e.what() << std::endl;}
+      catch (Subroutine_Evaluation_Exception(e)) {std::clog << e.what() << std::endl;}
+      catch (No_Binding_Exception(e)) {std::clog << e.what() << std::endl;}
+    } while (!feof(yyin));
+  }
+  catch (Lisp_Exit) {}
+  cout << "Good bye." << endl;
+  return 0;
 }
 
 

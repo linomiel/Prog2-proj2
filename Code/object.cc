@@ -41,6 +41,10 @@ bool is_empty(Object l) {
   return null(l);
 }
 
+bool eqp(Object a, Object b) {
+  return a->is_eq(b);
+}
+
 Object number_to_Object(int n) {
   Object p = new Cell();
   p -> make_cell_number(n);

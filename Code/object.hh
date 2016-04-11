@@ -14,6 +14,8 @@ Object cdr(Object l);
 Object empty();
 bool is_empty(Object l);
 
+bool eqp(Object a, Object b);
+
 Object number_to_Object(int n);
 Object string_to_Object(string s);
 Object symbol_to_Object(string s);
