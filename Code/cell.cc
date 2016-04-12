@@ -3,6 +3,7 @@
 #include <string>
 #include <cstring> // For strdup
 #include "cell.hh"
+#include <cstdlib> 
 
 using namespace std;
 
@@ -65,6 +66,18 @@ Cell *Cell::nil() {
 Cell::Cell() {
   make_cell_number(42); //For instance. Why not? :-)
   check();
+}
+
+Cell::~Cell() {
+  if (sort == STRING) {
+    std::free(value.as_string);
+  }
+  if (sort == SYMBOL) {
+    std::free(value.as_symbol);
+  }
+  if (sort == SUBR) {
+    std::free(value.as_subr);
+  }
 }
 
 void Cell::make_cell_number(int a) {

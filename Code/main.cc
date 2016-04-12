@@ -4,6 +4,8 @@
 #include "subr.hh"
 #include <stdio.h>
 #include <cassert>
+#include "memory.hh"
+#include <cstdlib> 
 extern Object just_read;
 extern "C" int yyparse();
 extern "C" FILE *yyin;
@@ -61,6 +63,7 @@ int main() {
   }
   catch (Lisp_Exit) {}
   cout << "Good bye." << endl;
+  Memory::free_all();
   return 0;
 }
 

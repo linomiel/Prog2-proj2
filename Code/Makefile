@@ -32,13 +32,15 @@ cell.o: cell.cc cell.hh
 env.o: env.cc env.hh object.hh cell.hh
 eval.o: eval.cc eval.hh object.hh cell.hh env.hh
 main.o: main.cc object.hh cell.hh env.hh eval.hh
-object.o: object.cc object.hh cell.hh
+object.o: object.cc object.hh cell.hh memory.hh
+memory.o: memory.cc memory.hh object.hh
 subr.o: subr.cc subr.hh object.hh env.hh
 cell.o: cell.hh
 env.o: env.hh object.hh cell.hh
 eval.o: eval.hh object.hh cell.hh env.hh
 main.o: main.hh
-object.o: object.hh cell.hh
+object.o: object.hh cell.hh memory.hh
+memory.o: memory.hh
 subr.o: subr.hh
 main.o: lisp_yacc.o
 ################################

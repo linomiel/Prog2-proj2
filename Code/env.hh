@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "object.hh"
+#include "memory.hh"
 
 using namespace std;
 
