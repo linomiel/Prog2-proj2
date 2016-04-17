@@ -3,6 +3,7 @@
 #include <string>
 #include <stdexcept>
 #include "env.hh"
+#include "memory.hh"
 
 using namespace std;
 
@@ -72,6 +73,16 @@ void Environment::print(ostream& s) {
   }
 }
 
+void Environment::mark(std::vector < struct memory_cell > &mem) const {
+  for (int i = contents.size() - 1; i >= 0; i--) {
+    for (vector < struct memory_cell >::iterator j = mem.begin() ; j != mem.end(); j++) {
+      if (contents.at(i).get_value() == (*j).obj) {
+        (*j).marked = true;
+      }
+    }
+  }
+}
+  
 ostream& operator << (ostream& s, Environment& env) {
   env.print(s);
   return s;

@@ -157,6 +157,7 @@ static ostream& print_cell_pointer(ostream& s, const Cell *p) {
     s << ")" << flush;
     return s;
   }
+  //return (s << "unknown (at " << &p << ")"<< flush);
   assert(false);
 }
 

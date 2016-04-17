@@ -41,7 +41,12 @@ bool handle_directive (Object l, Environment &env) {
   return false;
 }
 
+extern struct memory_cell void_cell;
+
 int main() {
+  void_cell.marked = false;
+  void_cell.obj = NULL;
+  
   Environment env;
   env_init_subr(env);
   
@@ -59,6 +64,7 @@ int main() {
       catch (Subroutine_Evaluation_Exception(e)) {std::clog << e.what() << std::endl;}
       catch (No_Binding_Exception(e)) {std::clog << e.what() << std::endl;}
       catch (Evaluation_Exception(e)) {std::clog << e.what() << std::endl;}
+      Memory::clean(env);
     } while (!feof(yyin));
   }
   catch (Lisp_Exit) {}
