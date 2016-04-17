@@ -27,10 +27,11 @@ private:
   static Cell cell_nil;
   void check();
 
-  cell_sort get_sort() const;
 
 public:
+  cell_sort get_sort() const;
   Cell();
+  Cell(Cell const &c);
   ~Cell();
 
   bool is_number() const;

@@ -3,25 +3,22 @@
 #include "memory.hh"
 
 using namespace std;
-
 struct memory_cell void_cell;
 
-vector < struct memory_cell > Memory::mem(0, void_cell);
+vector < struct memory_cell > Memory::mem;
 
-Object Memory::allocate() {
-  mem.push_back(void_cell);
-  mem.back().obj = new Cell();
-  //cout << mem.size() << " # " << flush;
-  return mem.back().obj;
+Cell* Memory::allocate() {
+  mem.resize(mem.size() + 1);
+  mem.back().marked = false;
+  return &(mem.back().cell);
 }
 
 void Memory::clean(const Environment env) {
   env.mark(mem);
   for (vector < struct memory_cell >::iterator j = mem.begin() ; j != mem.end(); j++) {
-    //std::cout << (j - mem.begin()) << " # ?  " << (*j).obj << std::endl;
+    std::cout << (j - mem.begin()) << " # ?  " << &((*j).cell) << std::endl;
     if (!(*j).marked) {
-      //std::cout << "Memory clean of " << (*j).obj << std::endl;
-      delete (*j).obj;
+      std::cout << "Memory clean of " << &((*j).cell) << std::endl;
       mem.erase(j);
     }
   }
@@ -36,7 +33,11 @@ void Memory::clean(const Environment env) {
 }
 
 void Memory::free_all() {
-  for (vector < struct memory_cell >::iterator i = mem.begin() ; i != mem.end(); i++) {
-    delete (*i).obj;
+  mem.clear();
+}
+
+void Memory::printmem() {
+  for (vector < struct memory_cell >::iterator j = mem.begin() ; j != mem.end(); j++) {
+    std::cout << (j - mem.begin()) << " # ?  " << &((*j).cell) << "(at " << (void*) &((*j).cell) << ")" << std::endl;
   }
 }

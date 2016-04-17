@@ -17,7 +17,6 @@ bool null(Object l) {
 Object cons(Object a, Object l) {
   Object p = Memory::allocate();
   p -> make_cell_pair(a, l);
-  //std::cout << "New cons " << p << std::endl;
   return p;
 }
 
@@ -46,28 +45,24 @@ bool eqp(Object a, Object b) {
 Object number_to_Object(int n) {
   Object p = Memory::allocate();
   p -> make_cell_number(n);
-  //std::cout << "New number " << p << std::endl;
   return p;
 }
 
 Object string_to_Object(string s) {
   Object p = Memory::allocate();
   p -> make_cell_string(s);
-  //std::cout << "New string " << p << std::endl;
   return p;
 }
 
 Object symbol_to_Object(string s) {
   Object p = Memory::allocate();
   p -> make_cell_symbol(s);
-  //std::cout << "New symbol " << p << std::endl;
   return p;
 }
 
 Object subr_to_Object(string s) {
   Object p = Memory::allocate();
   p -> make_cell_subr(s);
-  //std::cout << "New subr " << p << std::endl;
   return p;
 }
 

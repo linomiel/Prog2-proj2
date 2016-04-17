@@ -1,5 +1,6 @@
 #include "subr.hh"
 #include "eval.hh"
+#include "memory.hh"
 extern Object just_read;
 extern "C" int yyparse();
 extern "C" FILE *yyin;
@@ -7,6 +8,9 @@ extern "C" FILE *yyin;
 void add_subr(Environment &env, string name) {
   Object p = subr_to_Object(name);
   env.add_new_binding(name, p);
+  Memory::printmem();
+  std::cout << "Create " << p << std::endl;
+  std::cout << "Env: " << env << std::endl;
 }
 
 void env_init_subr(Environment &env) {

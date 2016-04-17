@@ -45,10 +45,11 @@ extern struct memory_cell void_cell;
 
 int main() {
   void_cell.marked = false;
-  void_cell.obj = NULL;
   
   Environment env;
   env_init_subr(env);
+  Memory::printmem();
+  std::cout << env << std::endl;
   
   try {
     do {

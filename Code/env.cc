@@ -67,16 +67,16 @@ Object Environment::find_value(string name) {
 void Environment::print(ostream& s) {
   s << "\t| ";
   for (int i = contents.size() - 1; i >= 0; i--) {
-    if (!contents.at(i).get_value()->is_subr()) {
-      s << contents.at(i).get_name() << ": " << contents.at(i).get_value() << "; ";
-    }
+    //if (!contents.at(i).get_value()->is_subr()) {
+      s << contents.at(i).get_name() << ": [" << contents.at(i).get_value()->get_sort() << "]" << contents.at(i).get_value() << "; ";
+    //}
   }
 }
 
 void Environment::mark(std::vector < struct memory_cell > &mem) const {
   for (int i = contents.size() - 1; i >= 0; i--) {
     for (vector < struct memory_cell >::iterator j = mem.begin() ; j != mem.end(); j++) {
-      if (contents.at(i).get_value() == (*j).obj) {
+      if (contents.at(i).get_value() == &((*j).cell)) {
         (*j).marked = true;
       }
     }

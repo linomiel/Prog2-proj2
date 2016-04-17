@@ -68,6 +68,24 @@ Cell::Cell() {
   check();
 }
 
+Cell::Cell(Cell const &c) {
+  sort = c.get_sort();
+  value = c.value;
+  value.as_number = 42;
+  if (sort == STRING) {
+    value.as_string = strdup(c.value.as_string);
+  }
+  else if (sort == SYMBOL) {
+    value.as_symbol = strdup(c.value.as_symbol);
+  }
+  else if (sort == SUBR) {
+    value.as_subr = strdup(c.value.as_subr);
+  }
+  else {
+    value = c.value;
+  }
+}
+
 Cell::~Cell() {
   if (sort == STRING) {
     std::free(value.as_string);
@@ -146,6 +164,7 @@ static ostream& print_cell_pointer_aux(ostream& s, const Cell *p) {
 }
 
 static ostream& print_cell_pointer(ostream& s, const Cell *p) {
+  s << "[" << (p -> get_sort()) << "] ";
   if (p == Cell::nil()) return s << "nil" << flush;
   if (p -> is_number()) return s << p -> to_number() << flush;
   if (p -> is_string()) return s << p -> to_string() << flush;
@@ -157,7 +176,7 @@ static ostream& print_cell_pointer(ostream& s, const Cell *p) {
     s << ")" << flush;
     return s;
   }
-  //return (s << "unknown (at " << &p << ")"<< flush);
+  return (s << "unknown (at " << &p << ")"<< flush);
   assert(false);
 }
 
