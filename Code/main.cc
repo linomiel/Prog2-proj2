@@ -49,7 +49,7 @@ int main() {
       yyparse();
       Object l = just_read;
       try {
-      if (!handle_directive(l, env)) {
+        if (!handle_directive(l, env)) {
           cout << eval(l, env) << endl;
         }
       }
