@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <string>
 #include <cassert>
 #include "eval.hh"
 
@@ -89,20 +88,26 @@ Object eval_f(Object l, Environment &env) {
   return apply(f, vals, env);
 }
 
+extern bool debug;
+
 Object eval(Object l, Environment &env) {
-  clog << "\t";
-  for (unsigned int i = 0; i < level; i++) {
-    clog << " ";
+  if (debug) {
+    clog << "\t";
+    for (unsigned int i = 0; i < level; i++) {
+      clog << " ";
+    }
+    clog << level << " --> " << l << env << endl;
+    level++;
   }
-  clog << level << " --> " << l << env << endl;
-  level++;
   Object o = eval_f(l, env);
-  level--;
-  clog << "\t";
-  for (unsigned int i = 0; i < level; i++) {
-    clog << " ";
+  if (debug) {
+    level--;
+    clog << "\t";
+    for (unsigned int i = 0; i < level; i++) {
+      clog << " ";
+    }
+    clog << level << " <-- " << o << endl;
   }
-  clog << level << " <-- " << o << endl;
   return o;
 }
 
@@ -112,8 +117,6 @@ Object eval_list(Object largs, Environment env) {
 }
 
 Object apply(Object f, Object lvals, Environment &env) {
-  //clog << "\tapply: " << f << " " << lvals << env << endl;
-
   if (null(f)) throw Evaluation_Exception(f, env, "Cannot apply nil");
   if (numberp(f)) throw Evaluation_Exception(f, env, "Cannot apply a number");
   if (stringp(f)) throw Evaluation_Exception(f, env, "Cannot apply a string");

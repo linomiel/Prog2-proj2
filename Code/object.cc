@@ -1,6 +1,4 @@
-#include <iostream>
 #include <cassert>
-#include <string>
 #include "object.hh"
 
 using namespace std;
