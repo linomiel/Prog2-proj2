@@ -7,12 +7,6 @@
 #include <cstdlib> 
 #include "toplevel.hh"
 
-extern Object just_read;
-extern "C" int yyparse();
-extern "C" FILE *yyin;
-
-void yyrestart(FILE *new_file);
-
 using namespace std;
 
 extern bool debug;
