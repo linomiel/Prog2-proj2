@@ -51,20 +51,11 @@ Object eval_list(Object largs, Environment env);
 
 unsigned int level = 0;
 
-Object show_return_eval(Object o) {
-  level--;
-  clog << "\t";
-  for (unsigned int i = 0; i < level; i++) {
-    clog << " ";
-  }
-  clog << level << " <-- " << o << endl;
-  return o;
-}
-
 Object eval_f(Object l, Environment &env) {
   if (null(l)) return l;
   if (numberp(l)) return l;
   if (stringp(l)) return l;
+  if (subrp(l)) return l;
   if (symbolp(l)) return env.find_value(Object_to_string(l));
   assert(listp(l));
   Object f = car(l);
@@ -94,14 +85,8 @@ Object eval_f(Object l, Environment &env) {
     }
   }
   // It is a function applied to arguments
-  clog << "\t";
-  for (unsigned int i = 0; i < level; i++) {
-    clog << " ";
-  }
-  clog << level << " --> " << f << env << endl;
-  level++;
   Object vals = eval_list(cdr(l), env);
-  return show_return_eval(apply(f, vals, env));
+  return apply(f, vals, env);
 }
 
 Object eval(Object l, Environment &env) {
@@ -111,7 +96,14 @@ Object eval(Object l, Environment &env) {
   }
   clog << level << " --> " << l << env << endl;
   level++;
-  return show_return_eval(eval_f(l, env));
+  Object o = eval_f(l, env);
+  level--;
+  clog << "\t";
+  for (unsigned int i = 0; i < level; i++) {
+    clog << " ";
+  }
+  clog << level << " <-- " << o << endl;
+  return o;
 }
 
 Object eval_list(Object largs, Environment env) {
@@ -126,7 +118,7 @@ Object apply(Object f, Object lvals, Environment &env) {
   if (numberp(f)) throw Evaluation_Exception(f, env, "Cannot apply a number");
   if (stringp(f)) throw Evaluation_Exception(f, env, "Cannot apply a string");
   else if (symbolp(f)) {
-    Object new_f = env.find_value(Object_to_string(f));
+    Object new_f = eval(env.find_value(Object_to_string(f)), env);
     return apply(new_f, lvals, env);
   }
   else if (subrp(f)) {

@@ -21,7 +21,7 @@ bool handle_directive (Object l, Environment &env) {
         Object symb = cadr(l);
         Object value = caddr(l);
         env.add_new_binding(Object_to_string(symb), eval(value, env));
-        return true;	
+        return true;
       }
       if (instruct == "setq") {
         assert(!is_empty(cdr(l)));
@@ -33,7 +33,6 @@ bool handle_directive (Object l, Environment &env) {
       }
       if (instruct == "debug") {
       }
-      //for later : defun (procrastinate)
     }
   }
   return false;
