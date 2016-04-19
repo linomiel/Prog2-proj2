@@ -14,7 +14,7 @@ class Memory {
     static std::vector < struct memory_cell > mem;
   public:
     Memory();
-    static Cell* allocate();
+    static int allocate();
     static void clean(const Environment env);
     static void free_all();
     static void printmem();

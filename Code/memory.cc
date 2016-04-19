@@ -7,10 +7,17 @@ struct memory_cell void_cell;
 
 vector < struct memory_cell > Memory::mem;
 
-Cell* Memory::allocate() {
+int Memory::allocate() {
+  int i = 0
+  for (vector < struct memory_cell >::iterator j = mem.begin() ; j != mem.end(); j++) {
+    if (!j.marked)
+      return i;
+    i++;
+  }
+  //there is no free memory cell
   mem.resize(mem.size() + 1);
   mem.back().marked = false;
-  return &(mem.back().cell);
+  return i;
 }
 
 void Memory::clean(const Environment env) {
@@ -22,14 +29,6 @@ void Memory::clean(const Environment env) {
       mem.erase(j);
     }
   }
-  /*for (std::vector< Object >::iterator i = mem.begin() ; i != mem.end(); ++i) {
-    if (*i == supp) {
-      std::cout << "Memory clean" << std::endl;
-      delete (*i);
-      mem.erase(i);
-      return;
-    }
-  }*/
 }
 
 void Memory::free_all() {
