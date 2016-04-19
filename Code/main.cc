@@ -12,6 +12,8 @@ extern "C" FILE *yyin;
 
 using namespace std;
 
+bool in_debug = false;
+
 bool handle_directive (Object l, Environment &env) {
   if (listp(l)){
     Object f = car(l);
@@ -23,7 +25,7 @@ bool handle_directive (Object l, Environment &env) {
         Object symb = cadr(l);
         Object value = caddr(l);
         env.add_new_binding(Object_to_string(symb), eval(value, env));
-        return true;	
+        return true;
       }
       if (instruct == "setq") {
         assert(!is_empty(cdr(l)));
@@ -34,6 +36,7 @@ bool handle_directive (Object l, Environment &env) {
         return true;
       }
       if (instruct == "debug") {
+        debug = !debug;
       }
       //for later : defun (procrastinate)
     }
@@ -45,7 +48,6 @@ extern struct memory_cell void_cell;
 
 int main() {
   void_cell.marked = false;
-  
   Environment env;
   env_init_subr(env);
   Memory::printmem();
@@ -57,7 +59,7 @@ int main() {
       yyparse();
       Object l = just_read;
       try {
-      if (!handle_directive(l, env)) {
+        if (!handle_directive(l, env)) {
           cout << eval(l, env) << endl;
         }
       }
@@ -73,9 +75,4 @@ int main() {
   Memory::free_all();
   return 0;
 }
-
-
-
-
-
 
