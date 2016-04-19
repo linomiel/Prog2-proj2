@@ -23,7 +23,7 @@ private:
   string message;
 public:
 Subroutine_Evaluation_Exception(string _name, string _message):
-  runtime_error("Subroutine Evaluation error: " + _message), name(_name), message(_message) {}
+  runtime_error("Subroutine Evaluation error! " + _name + ": " + _message), name(_name), message(_message) {}
   virtual ~Subroutine_Evaluation_Exception() throw () {}
 };
 

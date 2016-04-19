@@ -5,72 +5,25 @@
 #include <stdio.h>
 #include <cassert>
 #include <cstdlib> 
+#include "toplevel.hh"
 
 extern Object just_read;
 extern "C" int yyparse();
 extern "C" FILE *yyin;
 
+void yyrestart(FILE *new_file);
+
 using namespace std;
 
-bool debug = false;
-
-bool handle_directive (Object l, Environment &env) {
-  if (listp(l)){
-    Object f = car(l);
-    if (symbolp(f)) {
-      string instruct = Object_to_string(f);
-      if (instruct == "define") {
-        assert(!is_empty(cdr(l)));
-        assert(!is_empty(cddr(l)));
-        Object symb = cadr(l);
-        Object value = caddr(l);
-        env.add_new_binding(Object_to_string(symb), eval(value, env));
-        return true;
-      }
-      if (instruct == "setq") {
-        assert(!is_empty(cdr(l)));
-        assert(!is_empty(cddr(l)));
-        Object symb = cadr(l);
-        Object value = caddr(l);
-        env.modify_env(Object_to_string(symb), eval(value, env));
-        return true;
-      }
-      if (instruct == "debug") {
-        debug = !debug;
-        if (debug) {
-          cout << "Debug active" << endl;
-        }
-        else {
-          cout << "Debug inactive" << endl;
-        }
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-extern struct memory_cell void_cell;
+extern bool debug;
 
 int main() {
   Environment env;
   env_init_subr(env);
+  debug = false;
   
   try {
-    do {
-      cout << "Lisp? " << flush;
-      yyparse();
-      Object l = just_read;
-      try {
-        if (!handle_directive(l, env)) {
-          cout << eval(l, env) << endl;
-        }
-      }
-      catch (User_Error(e)) {std::clog << e.what() << std::endl;}
-      catch (Subroutine_Evaluation_Exception(e)) {std::clog << e.what() << std::endl;}
-      catch (No_Binding_Exception(e)) {std::clog << e.what() << std::endl;}
-      catch (Evaluation_Exception(e)) {std::clog << e.what() << std::endl;}
-    } while (!feof(yyin));
+    top_level(env);
   }
   catch (Lisp_Exit) {}
   cout << "May Lisp be with you!" << endl;
