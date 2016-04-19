@@ -1,5 +1,6 @@
 #include "subr.hh"
 #include "eval.hh"
+#include "memory.hh"
 
 extern Object just_read;
 extern "C" int yyparse();

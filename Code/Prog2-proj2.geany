@@ -27,6 +27,7 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
+<<<<<<< HEAD
 current_page=8
 FILE_NAME_0=1894;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fmain.cc;0;2
 FILE_NAME_1=2564;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Feval.cc;0;2
@@ -40,6 +41,20 @@ FILE_NAME_8=91;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FP
 FILE_NAME_9=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fcell.cc;0;2
 FILE_NAME_10=115;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fcell.hh;0;2
 FILE_NAME_11=2543;LaTeX;0;EUTF-8;0;1;1;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2Frapport.tex;0;2
+=======
+current_page=3
+FILE_NAME_0=1730;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fmain.cc;0;2
+FILE_NAME_1=1252;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fobject.cc;0;2
+FILE_NAME_2=0;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fobject.hh;0;2
+FILE_NAME_3=694;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fmemory.cc;0;2
+FILE_NAME_4=124;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fmemory.hh;0;2
+FILE_NAME_5=843;Make;0;EUTF-8;1;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2FMakefile;0;2
+FILE_NAME_6=3362;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fcell.cc;0;2
+FILE_NAME_7=469;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fcell.hh;0;2
+FILE_NAME_8=890;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fenv.hh;0;2
+FILE_NAME_9=2104;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Fenv.cc;0;2
+FILE_NAME_10=2574;C++;0;EUTF-8;0;1;0;%2Fhome%2Fsolene%2FDocuments%2FENS%2FProg2%2FProg2-proj2%2FCode%2Feval.cc;0;2
+>>>>>>> b41e4af23c259f2697872059fd5ac6988b123121
 
 [VTE]
 last_dir=/home/solene/Documents/ENS/Prog2/Prog2-proj2/Code

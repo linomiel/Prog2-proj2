@@ -1,5 +1,6 @@
 #include <cassert>
 #include "object.hh"
+#include "memory.hh"
 
 using namespace std;
 
@@ -12,7 +13,7 @@ bool null(Object l) {
 }
 
 Object cons(Object a, Object l) {
-  Object p = new Cell();
+  Object p = Memory::allocate();
   p -> make_cell_pair(a, l);
   return p;
 }
@@ -40,25 +41,25 @@ bool eqp(Object a, Object b) {
 }
 
 Object number_to_Object(int n) {
-  Object p = new Cell();
+  Object p = Memory::allocate();
   p -> make_cell_number(n);
   return p;
 }
 
 Object string_to_Object(string s) {
-  Object p = new Cell();
+  Object p = Memory::allocate();
   p -> make_cell_string(s);
   return p;
 }
 
 Object symbol_to_Object(string s) {
-  Object p = new Cell();
+  Object p = Memory::allocate();
   p -> make_cell_symbol(s);
   return p;
 }
 
 Object subr_to_Object(string s) {
-  Object p = new Cell();
+  Object p = Memory::allocate();
   p -> make_cell_subr(s);
   return p;
 }

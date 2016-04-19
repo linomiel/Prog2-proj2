@@ -1,4 +1,5 @@
 #include "toplevel.hh"
+#include "memory.hh"
 
 bool debug;
 
@@ -34,18 +35,24 @@ bool handle_directive (Object l, Environment &env) {
           }
           return true;
         }
+        if (instruct == "printmem") {
+          Memory::printmem();
+          return true;
+        }
         if (instruct == "load") {
           if (is_empty(cdr(l)))
             throw Directive_Exception("load","Not enough arguments");
           if (!stringp(cadr(l)))
             throw Directive_Exception("load","File name must be a string");
-          FILE *fh = fopen(Object_to_string(cadr(l)).c_str(),"r");
+          string file_name = Object_to_string(cadr(l));
+          FILE *fh = fopen(file_name.c_str(),"r");
           if (!fh) {
             perror("load");
             return true;
           }
           yyrestart(fh);
           top_level(env);
+          std::cout << file_name << " successfully loaded." << std::endl;
           yyrestart(stdin);
           return true;
         }
@@ -64,6 +71,7 @@ void top_level(Environment &env) {
   do {
     cout << "Lisp? " << flush;
     stop = yyparse();
+    if (stop != 0) break;
     Object l = just_read;
     try {
       if (!handle_directive(l, env)) {
@@ -74,5 +82,6 @@ void top_level(Environment &env) {
     catch (Subroutine_Evaluation_Exception(e)) {std::clog << e.what() << std::endl;}
     catch (No_Binding_Exception(e)) {std::clog << e.what() << std::endl;}
     catch (Evaluation_Exception(e)) {std::clog << e.what() << std::endl;}
-  } while (!stop/*!feof(yyin)*/);
+    Memory::clean(env);
+  } while (!stop);
 }

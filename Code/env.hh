@@ -34,6 +34,8 @@ public:
   void extend_env(Object lpars, Object lvals);
   Object find_value(string name);
   void print(ostream& s);
+  
+  void mark(std::vector < struct memory_cell > &mem) const;
 };
 
 ostream& operator << (ostream& s, Environment& env);

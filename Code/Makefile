@@ -29,8 +29,9 @@ lisp_yacc.o: lisp_yacc.c
 
 ################################
 cell.o: cell.cc cell.hh
-object.o: object.cc object.hh cell.hh
+object.o: object.cc object.hh memory.hh cell.hh
 env.o: env.cc env.hh object.hh cell.hh
+memory.o: memory.cc memory.hh env.hh object.hh cell.hh
 subr.o: subr.cc subr.hh object.hh env.hh
 eval.o: eval.cc eval.hh object.hh cell.hh env.hh subr.hh
 toplevel.o: toplevel.cc toplevel.hh object.hh cell.hh env.hh subr.hh eval.hh

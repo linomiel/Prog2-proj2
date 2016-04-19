@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <cassert>
+#include <iomanip>
 #include "eval.hh"
 
 using namespace std;
@@ -93,20 +94,14 @@ extern bool debug;
 Object eval(Object l, Environment &env) {
   if (debug) {
     clog << "\t";
-    for (unsigned int i = 0; i < level; i++) {
-      clog << " ";
-    }
-    clog << level << " --> " << l << env << endl;
+    clog << std::setw(level) << "" << level << " --> " << l << env << endl;
     level++;
   }
   Object o = eval_f(l, env);
   if (debug) {
     level--;
     clog << "\t";
-    for (unsigned int i = 0; i < level; i++) {
-      clog << " ";
-    }
-    clog << level << " <-- " << o << endl;
+    clog << std::setw(level) << "" << level << " <-- " << o << endl;
   }
   return o;
 }

@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstring> // For strdup
 #include "cell.hh"
+#include <cstdlib> 
 
 using namespace std;
 
@@ -63,6 +64,36 @@ Cell *Cell::nil() {
 Cell::Cell() {
   make_cell_number(42); //For instance. Why not? :-)
   check();
+}
+
+Cell::Cell(Cell const &c) {
+  sort = c.get_sort();
+  value = c.value;
+  value.as_number = 42;
+  if (sort == STRING) {
+    value.as_string = strdup(c.value.as_string);
+  }
+  else if (sort == SYMBOL) {
+    value.as_symbol = strdup(c.value.as_symbol);
+  }
+  else if (sort == SUBR) {
+    value.as_subr = strdup(c.value.as_subr);
+  }
+  else {
+    value = c.value;
+  }
+}
+
+Cell::~Cell() {
+  if (sort == STRING) {
+    std::free(value.as_string);
+  }
+  if (sort == SYMBOL) {
+    std::free(value.as_symbol);
+  }
+  if (sort == SUBR) {
+    std::free(value.as_subr);
+  }
 }
 
 void Cell::make_cell_number(int a) {
