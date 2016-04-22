@@ -24,6 +24,7 @@ int main() {
     top_level(env);
   }
   catch (Lisp_Exit) {}
+  catch (FullMemory) {}
   cout << "May Lisp be with you!" << endl;
   Memory::free_all();
   return 0;
